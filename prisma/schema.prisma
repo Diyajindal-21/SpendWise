@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  clerkUserId  String        @unique
+  email        String        @unique
+  name         String?
+  imageUrl     String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  accounts     Account[]
+  budgets      Budget[]
+  transactions Transaction[]
+
+  @@map("users")
+}
+
+model Transaction {
+  id                String             @id @default(cuid())
+  type              TransactionType
+  amount            Decimal
+  date              DateTime
+  description       String?
+  category          String
+  receiptUrl        String?
+  isRecurring       Boolean            @default(false)
+  recurringInterval RecurringInterval?
+  nextRecurringDate DateTime?
+  lastProcessedDate DateTime?
+  status            TransactionStatus  @default(COMPLETED)
+  userId            String
+  accountId         String
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  account           Account            @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([accountId])
+  @@map("transactions")
+}
+
+model Budget {
+  id            String    @id @default(cuid())
+  amount        Decimal
+  lastAlertSent DateTime?
+  userId        String @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("budgets")
+}
+
+model Account {
+  id           String        @id @default(cuid())
+  name         String
+  type         AccountType
+  balance      Decimal       @default(0)
+  isDefault    Boolean       @default(false)
+  userId       String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@index([userId])
+  @@map("accounts")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum RecurringInterval {
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
+enum TransactionStatus {
+  COMPLETED
+  PENDING
+  FAILED
+}
+
+enum AccountType {
+  CURRENT
+  SAVINGS
+}
