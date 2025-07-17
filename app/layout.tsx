@@ -44,14 +44,16 @@ export default function RootLayout({
           </main>
         <Toaster richColors></Toaster>
         {/*footer*/}
-        <footer className="w-full py-8 bg-gradient-to-t from-[#181830] to-[#23233a] rounded-t-lg bg-opacity-90 border-t border-[#2d2d5a] mt-auto">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center">
-    <h3 className="font-semibold text-white mb-2 text-lg sm:text-xl text-center">About Us</h3>
-    <p className="text-[#b0b3c7] leading-relaxed text-center text-base sm:text-lg max-w-2xl">
+        <footer className="w-full py-8 bg-gradient-to-t from-[#181830] to-[#23233a] rounded-t-2xl bg-opacity-90 border-t border-[#2d2d5a] mt-auto">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center text-center space-y-2">
+    <h3 className="font-semibold text-white text-lg sm:text-xl">
+      About Us
+    </h3>
+    <p className="text-[#b0b3c7] leading-relaxed text-base sm:text-lg max-w-2xl">
       We are a leading financial services company dedicated to providing innovative solutions to our customers.
     </p>
   </div>
-</footer>     
+</footer>  
       </body>
     </html>
     </ClerkProvider>

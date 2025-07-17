@@ -75,67 +75,75 @@ const DashboardOverview = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full px-4 sm:px-6 md:px-0">
         {/* Recent Transactions Card */}
         <Card className="bg-gradient-to-br from-[#23234a]/80 to-[#181830]/90 border border-white/10 rounded-2xl shadow-xl backdrop-blur-md w-full">
-          <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 pb-4 px-4 pt-4">
-            <CardTitle className="text-base font-semibold text-white">
-              Recent Transactions
-            </CardTitle>
-            <Select value={selectedAccountId} onValueChange={setSelectedAccountId}>
-              <SelectTrigger className="w-full sm:w-[140px] bg-[#23234a] border border-white/10 text-white rounded-lg focus:ring-2 focus:ring-[#5f5fff] transition">
-                <SelectValue placeholder="Select account" />
-              </SelectTrigger>
-              <SelectContent className="bg-[#23234a] text-white border border-white/10 rounded-lg">
-                {accounts.map((account) => (
-                  <SelectItem key={account.id} value={account.id}>
-                    {account.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </CardHeader>
-          <CardContent className="px-3 pb-6">
-            <div className="space-y-4">
-              {recentTransactions.length === 0 ? (
-                <p className="text-center text-[#b0b3c7] py-4">
-                  No recent transactions
-                </p>
-              ) : (
-                recentTransactions.map((transaction) => (
-                  <div
-                    key={transaction.id}
-                    className="flex items-center justify-between bg-[#23234a]/60 rounded-xl px-4 py-3 shadow-sm"
-                  >
-                    <div className="space-y-1">
-                      <p className="text-md font-medium leading-none text-white break-all">
-                        {transaction.description || "Untitled Transaction"}
-                      </p>
-                      <p className="text-xs text-[#b0b3c7]">
-                        {format(new Date(transaction.date), "PP")}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div
-                        className={cn(
-                          "flex items-center font-semibold text-base",
-                          transaction.type === "EXPENSE"
-                            ? "text-rose-400"
-                            : "text-green-400"
-                        )}
-                      >
-                        {transaction.type === "EXPENSE" ? (
-                          <ArrowDownRight className="mr-1 h-4 w-4" />
-                        ) : (
-                          <ArrowUpRight className="mr-1 h-4 w-4" />
-                        )}
-                        ${transaction.amount.toFixed(2)}
-                      </div>
-                    </div>
-                  </div>
-                ))
-              )}
+  <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 pb-4 px-4 pt-4 relative">
+    <CardTitle className="text-base font-semibold text-white">
+      Recent Transactions
+    </CardTitle>
+
+    <div className="w-full sm:w-auto">
+      <Select value={selectedAccountId} onValueChange={setSelectedAccountId}>
+        <SelectTrigger className="w-full sm:w-[140px] bg-[#23234a] border border-white/10 text-white rounded-lg focus:ring-2 focus:ring-[#5f5fff] transition">
+          <SelectValue placeholder="Select account" />
+        </SelectTrigger>
+        <SelectContent
+          className="bg-[#23234a] text-white border border-white/10 rounded-lg"
+          side="bottom"
+          align="end"
+          avoidCollisions
+        >
+          {accounts.map((account) => (
+            <SelectItem key={account.id} value={account.id}>
+              {account.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  </CardHeader>
+
+  <CardContent className="px-3 pb-6">
+    <div className="space-y-4">
+      {recentTransactions.length === 0 ? (
+        <p className="text-center text-[#b0b3c7] py-4">
+          No recent transactions
+        </p>
+      ) : (
+        recentTransactions.map((transaction) => (
+          <div
+            key={transaction.id}
+            className="flex items-center justify-between bg-[#23234a]/60 rounded-xl px-4 py-3 shadow-sm"
+          >
+            <div className="space-y-1">
+              <p className="text-md font-medium leading-none text-white break-all">
+                {transaction.description || "Untitled Transaction"}
+              </p>
+              <p className="text-xs text-[#b0b3c7]">
+                {format(new Date(transaction.date), "PP")}
+              </p>
             </div>
-          </CardContent>
-        </Card>
-  
+            <div className="flex items-center gap-2">
+              <div
+                className={cn(
+                  "flex items-center font-semibold text-base",
+                  transaction.type === "EXPENSE"
+                    ? "text-rose-400"
+                    : "text-green-400"
+                )}
+              >
+                {transaction.type === "EXPENSE" ? (
+                  <ArrowDownRight className="mr-1 h-4 w-4" />
+                ) : (
+                  <ArrowUpRight className="mr-1 h-4 w-4" />
+                )}
+                ${transaction.amount.toFixed(2)}
+              </div>
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  </CardContent>
+</Card>  
         {/* Monthly Expense Breakdown Card */}
         <Card className="bg-gradient-to-br from-[#23234a]/80 to-[#181830]/90 border border-white/10 rounded-2xl shadow-xl backdrop-blur-md w-full">
           <CardHeader className="px-4 pt-4">
